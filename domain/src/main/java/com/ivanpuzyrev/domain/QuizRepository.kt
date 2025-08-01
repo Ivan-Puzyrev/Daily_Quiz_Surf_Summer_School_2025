@@ -9,5 +9,6 @@ interface QuizRepository {
     suspend fun getCategories(): ApiResult<List<String>>
     suspend fun getQuestions(category: String, difficulty: Difficulty): ApiResult<List<Question>>
     suspend fun saveGameResult(gameResult: GameResult)
-    suspend fun getGameResults(): Flow<List<GameResult>>
+    suspend fun deleteGameResult(gameResultId: Int)
+    fun getGameResults(): Flow<List<GameResult>>
 }
