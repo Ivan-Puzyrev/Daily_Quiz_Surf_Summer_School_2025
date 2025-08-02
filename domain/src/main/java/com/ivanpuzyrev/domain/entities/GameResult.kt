@@ -1,7 +1,7 @@
 package com.ivanpuzyrev.domain.entities
 
 data class GameResult(
-    val id: Int,
+    val id: Int = 0,
     val date: String,
     val time: String,
     val category: String,

@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
                     Text(modifier = Modifier.padding(innerPadding), text = "Привет, Surf!")
 
                 }
+                }
             }
         }
     }
-}

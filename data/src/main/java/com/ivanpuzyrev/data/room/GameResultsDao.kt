@@ -17,5 +17,5 @@ interface GameResultsDao {
     suspend fun addGameResult(gameResultDbModel: GameResultDbModel)
 
     @Query("DELETE FROM game_results WHERE id=:gameResultId")
-    suspend fun deleteGameResult(gameResultId: Int)
+    suspend fun deleteGameResult(gameResultId: Int): Int
 }
