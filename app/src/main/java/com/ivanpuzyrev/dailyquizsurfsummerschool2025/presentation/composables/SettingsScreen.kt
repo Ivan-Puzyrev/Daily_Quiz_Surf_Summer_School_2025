@@ -57,8 +57,6 @@ fun SettingScreen(
     isError: Boolean,
     onButtonClicked: (Int, String) -> Unit
 ) {
-
-    DailyQuizSurfSummerSchool2025Theme {
         Scaffold(
             topBar = {
                 CenterAlignedTopAppBar(
@@ -143,9 +141,6 @@ fun SettingScreen(
 
 
         }
-
-
-    }
 }
 
 //@Preview

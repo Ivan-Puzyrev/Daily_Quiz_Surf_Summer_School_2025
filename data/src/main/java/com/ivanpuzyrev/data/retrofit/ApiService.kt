@@ -8,7 +8,7 @@ import retrofit2.http.Query
 interface ApiService {
     @GET("api.php")
     suspend fun getQuestions(
-        @Query("amount") amount: Int = 5,
+        @Query("amount") amount: Int = 40,
         @Query("category") category: Int,
         @Query("difficulty") difficulty: String,
         @Query("type") type: String = "multiple"

@@ -1,5 +1,6 @@
 package com.ivanpuzyrev.data
 
+import android.text.Html
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ivanpuzyrev.data.db_model.GameResultDbModel
@@ -16,9 +17,15 @@ class Mapper {
 
     private fun mapQuestionDtoToEntity(questionDTO: QuestionDTO): Question {
         return Question(
-            question = questionDTO.question,
-            correctAnswer = questionDTO.correctAnswer,
-            incorrectAnswers = questionDTO.incorrectAnswers
+            question = Html.fromHtml(questionDTO.question, Html.FROM_HTML_MODE_LEGACY).toString(),
+            correctAnswer = Html.fromHtml(questionDTO.correctAnswer, Html.FROM_HTML_MODE_LEGACY)
+                .toString(),
+            incorrectAnswers = questionDTO.incorrectAnswers.map {
+                Html.fromHtml(
+                    it,
+                    Html.FROM_HTML_MODE_LEGACY
+                ).toString()
+            }
         )
     }
 

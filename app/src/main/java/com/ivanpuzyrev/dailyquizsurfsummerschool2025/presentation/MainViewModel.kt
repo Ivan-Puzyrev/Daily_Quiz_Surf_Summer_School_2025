@@ -11,6 +11,7 @@ import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables.St
 import com.ivanpuzyrev.data.QuizRepositoryImpl
 import com.ivanpuzyrev.domain.ApiResult
 import com.ivanpuzyrev.domain.entities.Category
+import com.ivanpuzyrev.domain.entities.Question
 import com.ivanpuzyrev.domain.usecases.GetCategoriesUseCase
 import com.ivanpuzyrev.domain.usecases.GetQuestionsUseCase
 import com.ivanpuzyrev.domain.usecases.SaveGameResultUseCase
@@ -24,8 +25,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val getQuestionsUseCase = GetQuestionsUseCase(repository)
     private val saveGameResultUseCase = SaveGameResultUseCase(repository)
 
-    val mainScreenState: MutableStateFlow<MainScreenState> = MutableStateFlow(MainScreenState.Initial )
+    val mainScreenState: MutableStateFlow<MainScreenState> = MutableStateFlow(Initial)
     var categoryList: List<Category> = emptyList()
+    var questionsList: List<Question> = emptyList()
+    var currentQuestion = 1
 
 
     fun goToSettingsScreen() {
@@ -37,26 +40,39 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     categoryList = apiResult.data
                     mainScreenState.value = Settings(categoryList)
                 }
+
                 is ApiResult.Error -> mainScreenState.value = StartScreenError
             }
         }
 
     }
 
-    fun getQuestions(categoryId: Int, difficulty: String) {
+    fun getNextQuestion() {
+
+        mainScreenState.value =
+            Question(questionsList[currentQuestion - 1], currentQuestion, TOTAL_NUMBER_OF_QUESTIONS)
+        currentQuestion++
+    }
+
+    fun loadQuestions(categoryId: Int, difficulty: String) {
         viewModelScope.launch {
+            mainScreenState.value = SettingsLoading
             val apiResult = getQuestionsUseCase(categoryId, difficulty)
             when (apiResult) {
                 is ApiResult.Success -> {
-                    mainScreenState.value = SettingsLoading
-                    Log.d("MainViewModel", apiResult.data.toString())
+                    questionsList = apiResult.data
+                    getNextQuestion()
                 }
+
                 is ApiResult.Error -> {
                     mainScreenState.value = SettingsError(categoryList)
                 }
             }
-
         }
+    }
+
+    companion object {
+        const val TOTAL_NUMBER_OF_QUESTIONS = 5
     }
 
 

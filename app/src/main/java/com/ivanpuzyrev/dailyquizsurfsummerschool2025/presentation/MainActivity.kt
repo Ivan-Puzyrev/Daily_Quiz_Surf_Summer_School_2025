@@ -1,6 +1,7 @@
 package com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -22,10 +23,12 @@ import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables.QuestionScreen
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables.SettingScreen
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables.StartScreen
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.DailyQuizSurfSummerSchool2025Theme
 import com.ivanpuzyrev.domain.entities.Category
+import com.ivanpuzyrev.domain.entities.Question
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -35,36 +38,22 @@ class MainActivity : ComponentActivity() {
         setContent {
             DailyQuizSurfSummerSchool2025Theme {
 
+
                 val viewModel: MainViewModel = viewModel()
 
                 val mainScreenState = viewModel.mainScreenState.collectAsState()
 
                 when (mainScreenState.value) {
                     is MainScreenState.Initial -> {
-                        StartScreen(
-                            isLoading = false,
-                            isError = false,
-                            onHistoryClick = { },
-                            onStartClick = { viewModel.goToSettingsScreen() }
-                        )
+                        StartScreen(isLoading = false, isError = false, onHistoryClick = { }, onStartClick = { viewModel.goToSettingsScreen() })
                     }
 
                     is MainScreenState.StartScreenLoading -> {
-                        StartScreen(
-                            isLoading = true,
-                            isError = false,
-                            onHistoryClick = { },
-                            onStartClick = { viewModel.goToSettingsScreen() }
-                        )
+                        StartScreen(isLoading = true, isError = false, onHistoryClick = { }, onStartClick = { viewModel.goToSettingsScreen() })
                     }
 
                     is MainScreenState.StartScreenError -> {
-                        StartScreen(
-                            isLoading = false,
-                            isError = true,
-                            onHistoryClick = { },
-                            onStartClick = { viewModel.goToSettingsScreen() }
-                        )
+                        StartScreen(isLoading = false, isError = true, onHistoryClick = { }, onStartClick = { viewModel.goToSettingsScreen() })
                     }
 
                     is MainScreenState.Settings -> {
@@ -72,7 +61,7 @@ class MainActivity : ComponentActivity() {
                             categoriesList = (mainScreenState.value as MainScreenState.Settings).categoriesList,
                             isError = false,
                             onButtonClicked = { categoryId: Int, difficulty: String ->
-                                viewModel.getQuestions(categoryId, difficulty)
+                                viewModel.loadQuestions(categoryId, difficulty)
                             }
                         )
                     }
@@ -81,7 +70,7 @@ class MainActivity : ComponentActivity() {
                             categoriesList = (mainScreenState.value as MainScreenState.SettingsError).categoriesList,
                             isError = true,
                             onButtonClicked = { categoryId: Int, difficulty: String ->
-                                viewModel.getQuestions(categoryId, difficulty)
+                                viewModel.loadQuestions(categoryId, difficulty)
                             }
                         )
                     }
@@ -89,6 +78,19 @@ class MainActivity : ComponentActivity() {
                         Scaffold {paddings ->
                             Box (modifier = Modifier.padding(paddings).fillMaxSize()) {
                                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                            }
+                        }
+                    }
+                    is MainScreenState.Question -> {
+                        val questionState = (mainScreenState.value as MainScreenState.Question)
+                        if (questionState.numberOfQuestion != questionState.totalNumberOfQuestions) {
+                            QuestionScreen(questionState.question, questionState.numberOfQuestion, questionState.totalNumberOfQuestions) {
+                                Log.d ("MainActivity", it)
+                                viewModel.getNextQuestion()
+                            }
+                        } else {
+                            QuestionScreen(questionState.question, questionState.numberOfQuestion, questionState.totalNumberOfQuestions) {
+
                             }
                         }
 
