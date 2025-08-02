@@ -10,6 +10,7 @@ import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.MainScreenStat
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables.StartScreen
 import com.ivanpuzyrev.data.QuizRepositoryImpl
 import com.ivanpuzyrev.domain.ApiResult
+import com.ivanpuzyrev.domain.entities.Answer
 import com.ivanpuzyrev.domain.entities.Category
 import com.ivanpuzyrev.domain.entities.Question
 import com.ivanpuzyrev.domain.usecases.GetCategoriesUseCase
@@ -28,6 +29,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val mainScreenState: MutableStateFlow<MainScreenState> = MutableStateFlow(Initial)
     var categoryList: List<Category> = emptyList()
     var questionsList: List<Question> = emptyList()
+    val answers = mutableListOf<Answer>()
     var currentQuestion = 1
 
 
@@ -45,6 +47,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
 
+    }
+
+    fun answerTheQuestion(answer: String) {
+        val question = questionsList[currentQuestion-2]
+        val answer = Answer(question, answer)
+        answers.add(answer)
+        val correctAnswers = answers.count { it.selectedAnswer == it.question.correctAnswer }
+        Log.d("MainViewModel", "Correct Answers: $correctAnswers")
     }
 
     fun getNextQuestion() {
@@ -66,6 +76,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
                 is ApiResult.Error -> {
                     mainScreenState.value = SettingsError(categoryList)
+                    Log.d("MainViewModel", "Error: ${apiResult.error}")
                 }
             }
         }

@@ -85,7 +85,7 @@ class MainActivity : ComponentActivity() {
                         val questionState = (mainScreenState.value as MainScreenState.Question)
                         if (questionState.numberOfQuestion != questionState.totalNumberOfQuestions) {
                             QuestionScreen(questionState.question, questionState.numberOfQuestion, questionState.totalNumberOfQuestions) {
-                                Log.d ("MainActivity", it)
+                                viewModel.answerTheQuestion(it)
                                 viewModel.getNextQuestion()
                             }
                         } else {
