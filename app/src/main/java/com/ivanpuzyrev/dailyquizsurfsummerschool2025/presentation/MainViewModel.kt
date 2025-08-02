@@ -6,9 +6,11 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.MainScreenState.*
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables.StartScreen
 import com.ivanpuzyrev.data.QuizRepositoryImpl
 import com.ivanpuzyrev.domain.ApiResult
+import com.ivanpuzyrev.domain.entities.Category
 import com.ivanpuzyrev.domain.usecases.GetCategoriesUseCase
 import com.ivanpuzyrev.domain.usecases.GetQuestionsUseCase
 import com.ivanpuzyrev.domain.usecases.SaveGameResultUseCase
@@ -23,32 +25,35 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val saveGameResultUseCase = SaveGameResultUseCase(repository)
 
     val mainScreenState: MutableStateFlow<MainScreenState> = MutableStateFlow(MainScreenState.Initial )
+    var categoryList: List<Category> = emptyList()
 
-    init {
-        getCategories()
+
+    fun goToSettingsScreen() {
+        viewModelScope.launch {
+            mainScreenState.value = StartScreenLoading
+            val apiResult = getCategoriesUseCase()
+            when (apiResult) {
+                is ApiResult.Success -> {
+                    categoryList = apiResult.data
+                    mainScreenState.value = Settings(categoryList)
+                }
+                is ApiResult.Error -> mainScreenState.value = StartScreenError
+            }
+        }
+
     }
 
     fun getQuestions(categoryId: Int, difficulty: String) {
         viewModelScope.launch {
             val apiResult = getQuestionsUseCase(categoryId, difficulty)
-            if (apiResult is ApiResult.Success) {
-                Log.d("MainViewModel", apiResult.data.toString())
-            }
-
-        }
-    }
-
-    fun getSetting() {
-        viewModelScope.launch {
-            Log.d("MainViewModel", getCategoriesUseCase().toString())
-        }
-    }
-
-    fun getCategories()  {
-        viewModelScope.launch {
-            val apiResult = getCategoriesUseCase()
-            if (apiResult is ApiResult.Success) {
-                mainScreenState.value =  MainScreenState.Settings(apiResult.data)
+            when (apiResult) {
+                is ApiResult.Success -> {
+                    mainScreenState.value = SettingsLoading
+                    Log.d("MainViewModel", apiResult.data.toString())
+                }
+                is ApiResult.Error -> {
+                    mainScreenState.value = SettingsError(categoryList)
+                }
             }
 
         }

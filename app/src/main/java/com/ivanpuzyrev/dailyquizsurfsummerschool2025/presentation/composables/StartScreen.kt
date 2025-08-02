@@ -38,96 +38,100 @@ import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StartScreen(isLoading: Boolean, isError: Boolean, onHistoryClick: () -> Unit) {
+fun StartScreen(
+    isLoading: Boolean,
+    isError: Boolean,
+    onHistoryClick: () -> Unit,
+    onStartClick: () -> Unit
+) {
 
-    DailyQuizSurfSummerSchool2025Theme {
-        Scaffold(
-            topBar = {
-                CenterAlignedTopAppBar(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 50.dp),
-                    title = {
-                        Button(
-                            onClick = { onHistoryClick() }
-                        ) {
-                            Text(
-                                text = "История",
-                                modifier = Modifier.padding(vertical = 4.dp),
-                                fontSize = 12.sp,
-                                color = Indigo
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Icon(
-                                modifier = Modifier.height(16.dp),
-                                imageVector = Icons.Default.History,
-                                contentDescription = "History",
-                                tint = Indigo
-                            )
-                        }
-                    })
-
-            }
-        ) { paddings ->
-            Column(
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
                 modifier = Modifier
-                    .padding(paddings)
-                    .fillMaxSize()
-                    .padding(top = 75.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.daily_quiz),
-                    contentDescription = "Daily Quiz Logo"
-                )
-                if (isLoading) {
-                    CircularProgressIndicator(modifier = Modifier.padding(100.dp))
-                } else {
-                    Column {
-                        Card(
-                            modifier = Modifier
-                                .padding(horizontal = 12.dp, vertical = 32.dp)
-                                .fillMaxWidth(),
-                            shape = RoundedCornerShape(46.dp)
-                        ) {
-                            Column(
-                                modifier = Modifier.padding(vertical = 24.dp, horizontal = 32.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Text(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    text = "Добро пожаловать\nв DailyQuiz!",
-                                    textAlign = TextAlign.Center,
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 30.sp,
-                                    lineHeight = TextUnit(30f, TextUnitType.Sp)
-                                )
-                                Spacer(modifier = Modifier.height(32.dp))
+                    .fillMaxWidth()
+                    .padding(vertical = 50.dp),
+                title = {
+                    Button(
+                        onClick = { onHistoryClick() }
+                    ) {
+                        Text(
+                            text = "История",
+                            modifier = Modifier.padding(vertical = 4.dp),
+                            fontSize = 12.sp,
+                            color = Indigo
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Icon(
+                            modifier = Modifier.height(16.dp),
+                            imageVector = Icons.Default.History,
+                            contentDescription = "History",
+                            tint = Indigo
+                        )
+                    }
+                })
 
-                                QuizButton("НАЧАТЬ ВИКТОРИНУ", onClick = {}, enabled = true)
-                            }
-                        }
-                        if (isError) {
+        }
+    ) { paddings ->
+        Column(
+            modifier = Modifier
+                .padding(paddings)
+                .fillMaxSize()
+                .padding(top = 75.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                painter = painterResource(R.drawable.daily_quiz),
+                contentDescription = "Daily Quiz Logo"
+            )
+            if (isLoading) {
+                CircularProgressIndicator(modifier = Modifier.padding(100.dp))
+            } else {
+                Column {
+                    Card(
+                        modifier = Modifier
+                            .padding(horizontal = 12.dp, vertical = 32.dp)
+                            .fillMaxWidth(),
+                        shape = RoundedCornerShape(46.dp)
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(vertical = 24.dp, horizontal = 32.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
                             Text(
                                 modifier = Modifier.fillMaxWidth(),
-                                color = White,
-                                text = "Ошибка! Попробуйте еще раз",
+                                text = "Добро пожаловать\nв DailyQuiz!",
                                 textAlign = TextAlign.Center,
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 20.sp
+                                fontSize = 30.sp,
+                                lineHeight = TextUnit(30f, TextUnitType.Sp)
                             )
+                            Spacer(modifier = Modifier.height(32.dp))
+
+                            QuizButton("НАЧАТЬ ВИКТОРИНУ", onClick = { onStartClick() }, enabled = true)
                         }
+                    }
+                    if (isError) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            color = White,
+                            text = "Ошибка! Попробуйте еще раз",
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp
+                        )
                     }
                 }
             }
         }
     }
 
-
 }
 
 @Preview
 @Composable
 fun PreviewStartScreen() {
-    StartScreen(false, false, onHistoryClick = { })
+    DailyQuizSurfSummerSchool2025Theme {
+//        StartScreen(false, false, onHistoryClick = { })
+    }
 }

@@ -2,7 +2,6 @@ package com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -35,7 +34,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
@@ -45,6 +43,7 @@ import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.Black
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.DailyQuizSurfSummerSchool2025Theme
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.LightGray
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.Purple
+import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.White
 import com.ivanpuzyrev.domain.entities.Category
 import com.ivanpuzyrev.domain.entities.Difficulty
 
@@ -55,6 +54,7 @@ fun SettingScreen(
     difficultyList: List<Difficulty> = listOf(
         Difficulty.EASY, Difficulty.MEDIUM, Difficulty.HARD
     ),
+    isError: Boolean,
     onButtonClicked: (Int, String) -> Unit
 ) {
 
@@ -79,55 +79,68 @@ fun SettingScreen(
             var selectedCategory by remember { mutableStateOf("") }
             var selectedDifficulty by remember { mutableStateOf("") }
 
-            Card(
-                modifier = Modifier
-                    .padding(paddings)
-                    .padding(8.dp)
-                    .fillMaxWidth(),
-                shape = RoundedCornerShape(46.dp)
-            ) {
-                Column(
+            Column {
+                Card(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(32.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .padding(paddings)
+                        .padding(8.dp)
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(46.dp)
                 ) {
-                    Text(text = "Почти готовы!", fontWeight = FontWeight.Bold, fontSize = 25.sp)
-                    Text(
-                        modifier = Modifier.padding(vertical = 8.dp),
-                        text = "Осталось выбрать категорию\nи сложность викторины.",
-                        textAlign = TextAlign.Center,
-                        lineHeight = TextUnit(16f, TextUnitType.Sp)
-                    )
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(32.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(text = "Почти готовы!", fontWeight = FontWeight.Bold, fontSize = 25.sp)
+                        Text(
+                            modifier = Modifier.padding(vertical = 8.dp),
+                            text = "Осталось выбрать категорию\nи сложность викторины.",
+                            textAlign = TextAlign.Center,
+                            lineHeight = TextUnit(16f, TextUnitType.Sp)
+                        )
 
-                    Spacer(modifier = Modifier.height(15.dp))
+                        Spacer(modifier = Modifier.height(15.dp))
 
 
-                    BottomSheetSelector(
-                        filterName = "Категория",
-                        optionsList = categoriesList.map { it.name },
-                        onOptionSelected = { selectedCategory = it })
-                    BottomSheetSelector(
-                        filterName = "Сложность",
-                        optionsList = difficultyList.map { it.name },
-                        onOptionSelected = { selectedDifficulty = it })
+                        BottomSheetSelector(
+                            filterName = "Категория",
+                            optionsList = categoriesList.map { it.name },
+                            onOptionSelected = { selectedCategory = it })
+                        BottomSheetSelector(
+                            filterName = "Сложность",
+                            optionsList = difficultyList.map { it.name },
+                            onOptionSelected = { selectedDifficulty = it })
 
-                    Spacer(modifier = Modifier.height(75.dp))
+                        Spacer(modifier = Modifier.height(75.dp))
 
-                    QuizButton(
-                        text = "ДАЛЕЕ",
-                        onClick = {
-                            val selectedCategoryId = categoriesList.filter { it.name == selectedCategory }[0].id
-                            val selectedDifficulty = difficultyList.filter { it.name == selectedDifficulty }[0].difficulty
-                            onButtonClicked(selectedCategoryId, selectedDifficulty)
-                        },
-                        enabled = selectedCategory.isNotEmpty() && selectedDifficulty.isNotEmpty()
-                    )
+                        QuizButton(
+                            text = "ДАЛЕЕ",
+                            onClick = {
+                                val selectedCategoryId = categoriesList.filter { it.name == selectedCategory }[0].id
+                                val selectedDifficulty = difficultyList.filter { it.name == selectedDifficulty }[0].difficulty
+                                onButtonClicked(selectedCategoryId, selectedDifficulty)
+                            },
+                            enabled = selectedCategory.isNotEmpty() && selectedDifficulty.isNotEmpty()
+                        )
 
+
+                    }
 
                 }
-
+                if (isError) {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        color = White,
+                        text = "Ошибка! Попробуйте еще раз",
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp
+                    )
+                }
             }
+
 
         }
 
