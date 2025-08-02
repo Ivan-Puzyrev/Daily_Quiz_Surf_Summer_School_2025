@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables.StartScreen
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.DailyQuizSurfSummerSchool2025Theme
 
 class MainActivity : ComponentActivity() {
@@ -18,12 +20,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             DailyQuizSurfSummerSchool2025Theme {
 
-                Scaffold(modifier = Modifier.Companion.fillMaxSize()) { innerPadding ->
+                val viewModel: MainViewModel = viewModel()
 
-                    Text(modifier = Modifier.padding(innerPadding), text = "Привет, Surf!")
+                StartScreen(false, false, { viewModel.getSetting() })
 
-                }
-                }
             }
         }
     }
+}
