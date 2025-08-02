@@ -6,6 +6,6 @@ import com.ivanpuzyrev.domain.entities.Difficulty
 
 class GetQuestionsUseCase(private val repository: QuizRepository) {
 
-    suspend operator fun invoke(category: Category, difficulty: Difficulty) =
+    suspend operator fun invoke(category: Int, difficulty: String) =
         repository.getQuestions(category, difficulty)
 }

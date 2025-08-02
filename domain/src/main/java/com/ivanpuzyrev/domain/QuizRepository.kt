@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface QuizRepository {
     suspend fun getCategories(): ApiResult<List<Category>>
-    suspend fun getQuestions(category: Category, difficulty: Difficulty): ApiResult<List<Question>>
+    suspend fun getQuestions(category: Int, difficulty: String): ApiResult<List<Question>>
     suspend fun saveGameResult(gameResult: GameResult)
     suspend fun deleteGameResult(gameResultId: Int): Boolean
     fun getGameResults(): Flow<List<GameResult>>

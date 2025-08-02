@@ -44,13 +44,13 @@ class QuizRepositoryImpl(application: Application) : QuizRepository {
     }
 
     override suspend fun getQuestions(
-        category: Category,
-        difficulty: Difficulty
+        category: Int,
+        difficulty: String
     ): ApiResult<List<Question>> {
         val questionsResponseDTO = safeApiCall {
             apiService.getQuestions(
-                category = category.id,
-                difficulty = difficulty.difficulty
+                category = category,
+                difficulty = difficulty
             )
         }
         return when (questionsResponseDTO) {
