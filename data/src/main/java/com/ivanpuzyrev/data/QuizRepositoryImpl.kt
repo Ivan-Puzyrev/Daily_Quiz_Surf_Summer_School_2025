@@ -4,8 +4,10 @@ import android.app.Application
 import android.util.Log
 import com.ivanpuzyrev.data.dto_model.CategoriesResponseDTO
 import com.ivanpuzyrev.data.dto_model.QuestionsResponseDTO
+import com.ivanpuzyrev.data.retrofit.ApiService
 import com.ivanpuzyrev.data.retrofit.RetrofitObject
 import com.ivanpuzyrev.data.room.AppDatabase
+import com.ivanpuzyrev.data.room.GameResultsDao
 import com.ivanpuzyrev.domain.ApiError
 import com.ivanpuzyrev.domain.ApiResult
 import com.ivanpuzyrev.domain.QuizRepository
@@ -13,14 +15,16 @@ import com.ivanpuzyrev.domain.entities.Category
 import com.ivanpuzyrev.domain.entities.Difficulty
 import com.ivanpuzyrev.domain.entities.GameResult
 import com.ivanpuzyrev.domain.entities.Question
+import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class QuizRepositoryImpl(application: Application) : QuizRepository {
+class QuizRepositoryImpl @Inject constructor (
+    private val mapper: Mapper,
+    private val apiService: ApiService,
+    private val gameResultsDao: GameResultsDao
+) : QuizRepository {
 
-    val mapper = Mapper()
-    val apiService = RetrofitObject.apiService
-    val gameResultsDao = AppDatabase.getInstance(application).gameResultsDao()
 
     override suspend fun deleteGameResult(gameResultId: Int): Boolean {
         return gameResultsDao.deleteGameResult(gameResultId) > 0

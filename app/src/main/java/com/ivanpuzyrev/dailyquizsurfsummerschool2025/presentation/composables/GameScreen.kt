@@ -11,12 +11,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.ivanpuzyrev.dailyquizsurfsummerschool2025.getApplicationComponent
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.MainScreenState
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.MainViewModel
 
 @Composable
 fun GameScreen(onHistoryClick: () -> Unit) {
-    val viewModel: MainViewModel = viewModel()
+    val component = getApplicationComponent()
+    val viewModel: MainViewModel = viewModel(factory = component.getViewModelFactory())
 
     val mainScreenState = viewModel.mainScreenState.collectAsState()
 

@@ -41,9 +41,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.R
+import com.ivanpuzyrev.dailyquizsurfsummerschool2025.getApplicationComponent
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.HistoryScreenState
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.DailyQuizSurfSummerSchool2025Theme
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.HistoryViewModel
+import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.MainViewModel
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.Purple
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.White
 import com.ivanpuzyrev.domain.entities.Difficulty
@@ -53,7 +55,8 @@ import com.ivanpuzyrev.domain.entities.GameResult
 @Composable
 fun HistoryScreen(onHistoryRecordClick: (GameResult) -> Unit, onStartTheGameClick: () -> Unit) {
 
-    val viewModel: HistoryViewModel = viewModel()
+    val component = getApplicationComponent()
+    val viewModel: HistoryViewModel = viewModel(factory = component.getViewModelFactory())
 
     Scaffold(
         topBar = {

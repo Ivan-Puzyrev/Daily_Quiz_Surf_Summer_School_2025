@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.MainScreenState.*
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables.StartScreen
@@ -18,6 +19,7 @@ import com.ivanpuzyrev.domain.entities.Question
 import com.ivanpuzyrev.domain.usecases.GetCategoriesUseCase
 import com.ivanpuzyrev.domain.usecases.GetQuestionsUseCase
 import com.ivanpuzyrev.domain.usecases.SaveGameResultUseCase
+import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import java.time.ZoneId
@@ -25,17 +27,16 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val repository = QuizRepositoryImpl(application)
-    private val getCategoriesUseCase = GetCategoriesUseCase(repository)
-    private val getQuestionsUseCase = GetQuestionsUseCase(repository)
-    private val saveGameResultUseCase = SaveGameResultUseCase(repository)
+class MainViewModel @Inject constructor(
+    private val getCategoriesUseCase: GetCategoriesUseCase,
+    private val getQuestionsUseCase: GetQuestionsUseCase,
+    private val saveGameResultUseCase: SaveGameResultUseCase
+) : ViewModel() {
 
     val mainScreenState: MutableStateFlow<MainScreenState> = MutableStateFlow(Initial)
 
     var categoryList: List<Category> = emptyList()
-    var selectedCategoryId:Int = 0
+    var selectedCategoryId: Int = 0
     var selectedDifficulty: String = ""
     var questionsList: List<Question> = emptyList()
     val answers = mutableListOf<Answer>()
@@ -103,7 +104,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             val formattedDate = zonedDateTime.format(formatter)
             val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
             val formattedTime = zonedDateTime.format(timeFormatter)
-            val difficulty = Difficulty.entries.find { it.difficulty == selectedDifficulty } ?: Difficulty.UNKNOWN
+            val difficulty = Difficulty.entries.find { it.difficulty == selectedDifficulty }
+                ?: Difficulty.UNKNOWN
             val gameResult = GameResult(
                 date = formattedDate,
                 time = formattedTime,

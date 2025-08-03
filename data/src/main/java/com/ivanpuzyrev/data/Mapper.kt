@@ -1,6 +1,7 @@
 package com.ivanpuzyrev.data
 
 import android.text.Html
+import androidx.room.Insert
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ivanpuzyrev.data.db_model.GameResultDbModel
@@ -10,8 +11,9 @@ import com.ivanpuzyrev.domain.entities.Answer
 import com.ivanpuzyrev.domain.entities.Category
 import com.ivanpuzyrev.domain.entities.GameResult
 import com.ivanpuzyrev.domain.entities.Question
+import jakarta.inject.Inject
 
-class Mapper {
+class Mapper @Inject constructor() {
 
     private val gson = Gson()
 
