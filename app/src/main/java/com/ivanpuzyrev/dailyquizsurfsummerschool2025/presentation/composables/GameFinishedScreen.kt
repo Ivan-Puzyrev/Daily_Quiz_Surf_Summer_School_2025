@@ -3,6 +3,7 @@ package com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -38,15 +39,7 @@ import com.ivanpuzyrev.domain.entities.GameResultText
 @Composable
 fun GameFinishedScreen(gameResult: GameResult, onPlayAgainClick: () -> Unit) {
 
-    val gameResultText = when (gameResult.correctAnswers) {
-        0 -> GameResultText.ZERO
-        1 -> GameResultText.ONE
-        2 -> GameResultText.TWO
-        3 -> GameResultText.THREE
-        4 -> GameResultText.FOUR
-        5 -> GameResultText.FIVE
-        else -> GameResultText.UNKNOWN
-    }
+
 
     Scaffold(
         topBar = {
@@ -67,73 +60,88 @@ fun GameFinishedScreen(gameResult: GameResult, onPlayAgainClick: () -> Unit) {
         }
     ) { paddings ->
 
-        Column(modifier = Modifier.padding(paddings)) {
-
-            Card(
-                modifier = Modifier
-                    .padding(horizontal = 20.dp),
-
-                shape = RoundedCornerShape(46.dp)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(32.dp),
-                    verticalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        for (i in 1..gameResult.correctAnswers) {
-                            Image(
-                                modifier = Modifier.padding(horizontal = 4.dp),
-                                painter = painterResource(R.drawable.yellow_star),
-                                contentDescription = "Yellow Star",
-                            )
-                        }
-                        for (i in gameResult.correctAnswers until 5) {
-                            Image(
-                                modifier = Modifier.padding(horizontal = 4.dp),
-                                painter = painterResource(R.drawable.gray_star),
-                                contentDescription = "Gray Star",
-                            )
-                        }
-                    }
-
-                    Text(
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 30.dp),
-                        text = "${gameResult.correctAnswers} из ${gameResult.answers.size}",
-                        color = Yellow,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
-                    )
-
-                    Text(
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 15.dp),
-                        text = gameResultText.title,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center,
-                        fontSize = 24.sp
-                    )
-                    Text(
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 50.dp),
-                        text = gameResultText.text,
-                        textAlign = TextAlign.Center,
-                        fontSize = 16.sp
-                    )
-
-
-                    QuizButton(
-                        text = "НАЧАТЬ ЗАНОВО",
-                        enabled = true,
-                        onClick = {
-                            onPlayAgainClick()
-                        })
-                }
-            }
+        GameResultCard(paddings, gameResult) {
+            onPlayAgainClick()
         }
 
+    }
+}
+
+@Composable
+fun GameResultCard(paddings: PaddingValues, gameResult: GameResult, onPlayAgainClick: () -> Unit) {
+    val gameResultText = when (gameResult.correctAnswers) {
+        0 -> GameResultText.ZERO
+        1 -> GameResultText.ONE
+        2 -> GameResultText.TWO
+        3 -> GameResultText.THREE
+        4 -> GameResultText.FOUR
+        5 -> GameResultText.FIVE
+        else -> GameResultText.UNKNOWN
+    }
+
+    Card(
+        modifier = Modifier
+            .padding(paddings)
+            .padding(horizontal = 20.dp),
+
+        shape = RoundedCornerShape(46.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(32.dp),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                for (i in 1..gameResult.correctAnswers) {
+                    Image(
+                        modifier = Modifier.padding(horizontal = 4.dp),
+                        painter = painterResource(R.drawable.yellow_star),
+                        contentDescription = "Yellow Star",
+                    )
+                }
+                for (i in gameResult.correctAnswers until 5) {
+                    Image(
+                        modifier = Modifier.padding(horizontal = 4.dp),
+                        painter = painterResource(R.drawable.gray_star),
+                        contentDescription = "Gray Star",
+                    )
+                }
+            }
+
+            Text(
+                modifier = Modifier.fillMaxWidth().padding(vertical = 30.dp),
+                text = "${gameResult.correctAnswers} из ${gameResult.answers.size}",
+                color = Yellow,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
+
+            Text(
+                modifier = Modifier.fillMaxWidth().padding(bottom = 15.dp),
+                text = gameResultText.title,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                fontSize = 24.sp
+            )
+            Text(
+                modifier = Modifier.fillMaxWidth().padding(bottom = 50.dp),
+                text = gameResultText.text,
+                textAlign = TextAlign.Center,
+                fontSize = 16.sp
+            )
+
+
+            QuizButton(
+                text = "НАЧАТЬ ЗАНОВО",
+                enabled = true,
+                onClick = {
+                    onPlayAgainClick()
+                })
+        }
     }
 }
 

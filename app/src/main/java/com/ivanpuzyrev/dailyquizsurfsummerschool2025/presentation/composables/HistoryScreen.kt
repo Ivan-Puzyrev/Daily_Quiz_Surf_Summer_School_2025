@@ -1,6 +1,7 @@
 package com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,7 +42,7 @@ import com.ivanpuzyrev.domain.entities.GameResult
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HistoryScreen(onHistoryRecordClick: () -> Unit, onStartTheGameClick: () -> Unit) {
+fun HistoryScreen(onHistoryRecordClick: (GameResult) -> Unit, onStartTheGameClick: () -> Unit) {
 
     val viewModel: HistoryViewModel = viewModel()
 
@@ -107,7 +108,7 @@ fun HistoryScreen(onHistoryRecordClick: () -> Unit, onStartTheGameClick: () -> U
                 ) {
                     LazyColumn(modifier = Modifier.weight(1f)) {
                         items(items = gameResults, key = { it.id }) { gameResult ->
-                            GameResultCard(gameResult)
+                            GameResultCard(gameResult, { onHistoryRecordClick(it) })
                             Spacer(Modifier.height(28.dp))
                         }
                     }
@@ -147,10 +148,11 @@ fun PreviewHistoryScreen() {
 }
 
 @Composable
-fun GameResultCard(gameResult: GameResult) {
+fun GameResultCard(gameResult: GameResult, onHistoryRecordClick: (GameResult) -> Unit) {
     Card(
         modifier = Modifier
-            .padding(horizontal = 20.dp),
+            .padding(horizontal = 20.dp)
+            .clickable { onHistoryRecordClick(gameResult) },
 
         shape = RoundedCornerShape(46.dp)
     ) {
@@ -251,6 +253,8 @@ fun PreviewResultCard() {
             correctAnswers = 3,
             answers = emptyList()
         )
-        GameResultCard(gameResult)
+        GameResultCard(gameResult) {
+
+        }
     }
 }

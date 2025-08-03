@@ -29,6 +29,7 @@ import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables.Hi
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables.QuestionScreen
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables.SettingScreen
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables.StartScreen
+import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables.StatisticsScreen
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.navigation.AppNavGraph
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.navigation.ScreenRoute
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.navigation.rememberNavigationState
@@ -53,8 +54,8 @@ class MainActivity : ComponentActivity() {
                     gameScreen = {
                         GameScreen { navigationState.navigateTo(ScreenRoute.ROUTE_HISTORY) }
                     },
-                    historyScreen = { HistoryScreen({ }, { }) },
-                    statisticsScreen = { }
+                    historyScreen = { HistoryScreen({ navigationState.navigateToStatistics(it) }, { }) },
+                    statisticsScreen = { StatisticsScreen(it) { } }
                 )
             }
         }

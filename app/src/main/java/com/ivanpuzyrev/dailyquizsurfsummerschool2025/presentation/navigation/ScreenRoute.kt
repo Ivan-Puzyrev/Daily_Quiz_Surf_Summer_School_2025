@@ -13,6 +13,7 @@ sealed class ScreenRoute(
     object Statistics : ScreenRoute(ROUTE_STATISTICS) {
         private const val ROUTE_FOR_ARGS = "statistics"
         fun getRouteWithArgs(gameResult: GameResult): String {
+            
             val gameResultJson = Gson().toJson(gameResult)
             return "${ROUTE_FOR_ARGS}/${gameResultJson.encode()}"
         }

@@ -112,6 +112,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 correctAnswers = answers.filter { it.selectedAnswer == it.question.correctAnswer }.size,
                 answers = answers
             )
+            Log.d("MainViewModel", answers.toString())
             mainScreenState.value = MainScreenState.GameFinished(gameResult)
             saveGameResultUseCase(gameResult)
             clearTheResults()
