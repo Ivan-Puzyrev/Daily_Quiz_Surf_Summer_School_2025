@@ -21,7 +21,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -47,9 +46,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.R
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.getApplicationComponent
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.HistoryScreenState
-import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.DailyQuizSurfSummerSchool2025Theme
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.HistoryViewModel
-import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.MainViewModel
+import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.DailyQuizSurfSummerSchool2025Theme
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.Indigo
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.Purple
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.White
@@ -356,21 +354,3 @@ fun GameResultCard(
         }
     }
 }
-
-//@Preview
-//@Composable
-//fun PreviewResultCard() {
-//    DailyQuizSurfSummerSchool2025Theme {
-//        val gameResult = GameResult(
-//            date = "01.02.2023",
-//            time = "13:23",
-//            category = "General",
-//            difficulty = Difficulty.EASY,
-//            correctAnswers = 3,
-//            answers = emptyList()
-//        )
-//        GameResultCard(gameResult) {
-//
-//        }
-//    }
-//}

@@ -4,8 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.ivanpuzyrev.dailyquizsurfsummerschool2025.getApplicationComponent
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables.GameScreen
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables.HistoryScreen
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables.StatisticsScreen

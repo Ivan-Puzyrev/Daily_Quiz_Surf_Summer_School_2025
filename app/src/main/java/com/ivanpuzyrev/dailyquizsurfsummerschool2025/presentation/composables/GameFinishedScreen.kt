@@ -5,12 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -28,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.R
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.DailyQuizSurfSummerSchool2025Theme
-import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.Red
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.White
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.Yellow
 import com.ivanpuzyrev.domain.entities.Difficulty

@@ -1,15 +1,9 @@
 package com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation
 
-import android.app.Application
 import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.MainScreenState.*
-import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables.StartScreen
-import com.ivanpuzyrev.data.QuizRepositoryImpl
 import com.ivanpuzyrev.domain.ApiResult
 import com.ivanpuzyrev.domain.entities.Answer
 import com.ivanpuzyrev.domain.entities.Category

@@ -12,7 +12,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
@@ -26,13 +25,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.R
-import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.DailyQuizSurfSummerSchool2025Theme
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.Indigo
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.White
 
@@ -126,12 +123,4 @@ fun StartScreen(
         }
     }
 
-}
-
-@Preview
-@Composable
-fun PreviewStartScreen() {
-    DailyQuizSurfSummerSchool2025Theme {
-//        StartScreen(false, false, onHistoryClick = { })
-    }
 }

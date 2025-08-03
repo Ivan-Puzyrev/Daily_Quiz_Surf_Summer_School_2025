@@ -1,7 +1,6 @@
 package com.ivanpuzyrev.data
 
 import android.text.Html
-import androidx.room.Insert
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ivanpuzyrev.data.db_model.GameResultDbModel

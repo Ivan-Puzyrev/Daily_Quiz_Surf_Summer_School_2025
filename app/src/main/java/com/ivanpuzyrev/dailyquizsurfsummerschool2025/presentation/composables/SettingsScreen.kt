@@ -40,7 +40,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.R
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.Black
-import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.DailyQuizSurfSummerSchool2025Theme
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.LightGray
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.Purple
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.White
@@ -142,15 +141,6 @@ fun SettingScreen(
 
         }
 }
-
-//@Preview
-//@Composable
-//fun PreviewSettingScreen() {
-//    SettingScreen(
-//        categoriesList = listOf(Category(1, "Auto")),
-//        onButtonClicked = (Int, String) -> { }
-//    )
-//}
 
 
 @OptIn(ExperimentalMaterial3Api::class)
