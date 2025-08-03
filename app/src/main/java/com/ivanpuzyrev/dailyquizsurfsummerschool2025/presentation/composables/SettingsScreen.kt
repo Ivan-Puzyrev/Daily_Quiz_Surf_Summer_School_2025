@@ -172,9 +172,11 @@ fun BottomSheetSelector(
             val scrollState = rememberScrollState()
 
             Column(modifier = Modifier.padding(16.dp).verticalScroll(scrollState)) {
+                Text(modifier = Modifier.padding(bottom = 12.dp), text = filterName, fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Purple)
                 optionsList.forEach { option ->
                     Text(
                         text = option,
+                        color = Purple,
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
@@ -182,7 +184,7 @@ fun BottomSheetSelector(
                                 onOptionSelected(option)
                                 isSheetOpen = false
                             }
-                            .padding(12.dp)
+                            .padding(vertical = 12.dp)
                     )
                 }
             }
