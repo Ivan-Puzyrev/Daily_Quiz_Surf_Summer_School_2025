@@ -1,6 +1,5 @@
 package com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables
 
-import android.widget.Button
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
