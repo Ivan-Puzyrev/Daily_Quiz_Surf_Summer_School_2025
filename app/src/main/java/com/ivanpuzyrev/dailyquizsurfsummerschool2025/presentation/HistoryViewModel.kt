@@ -32,9 +32,9 @@ class HistoryViewModel @Inject constructor(
         viewModelScope.launch {
             getGameResultsUseCase().collect {
                 if (it.isEmpty()) {
-                    historyScreenState.emit(HistoryScreenState.NoRecords)
+                    historyScreenState.emit(HistoryScreenState.NoRecords(true))
                 } else {
-                    historyScreenState.emit(HistoryScreenState.GameResults(it))
+                    historyScreenState.emit(HistoryScreenState.GameResults(it, false))
                 }
             }
         }
@@ -42,7 +42,15 @@ class HistoryViewModel @Inject constructor(
 
     fun deleteGameResult(gameResultId: Int) {
         viewModelScope.launch {
-            deleteGameResultUseCase.invoke(gameResultId)
+            if (deleteGameResultUseCase.invoke(gameResultId)) {
+                historyScreenState.emit(
+                    HistoryScreenState.GameResults(
+                        (historyScreenState.value as HistoryScreenState.GameResults).gameResults,
+                        true
+                    )
+                )
+            }
+
         }
     }
 

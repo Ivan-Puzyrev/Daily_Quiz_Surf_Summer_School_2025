@@ -5,8 +5,8 @@ import com.ivanpuzyrev.domain.entities.GameResult
 sealed class HistoryScreenState {
 
     object Initial : HistoryScreenState()
-    object NoRecords: HistoryScreenState()
-    data class GameResults (val gameResults: List<GameResult>): HistoryScreenState()
+    data class NoRecords (val isDeleted: Boolean) : HistoryScreenState()
+    data class GameResults (val gameResults: List<GameResult>, val isDeleted: Boolean): HistoryScreenState()
 
 
 
