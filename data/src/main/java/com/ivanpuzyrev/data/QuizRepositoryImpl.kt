@@ -1,6 +1,7 @@
 package com.ivanpuzyrev.data
 
 import android.app.Application
+import android.util.Log
 import com.ivanpuzyrev.data.dto_model.CategoriesResponseDTO
 import com.ivanpuzyrev.data.dto_model.QuestionsResponseDTO
 import com.ivanpuzyrev.data.retrofit.RetrofitObject
@@ -53,6 +54,7 @@ class QuizRepositoryImpl(application: Application) : QuizRepository {
                 difficulty = difficulty
             )
         }
+        Log.d("QuizRepositoryImpl", questionsResponseDTO.toString())
         return when (questionsResponseDTO) {
             is ApiResult.Error -> ApiResult.Error(
                 if (questionsResponseDTO.error is ApiError.Network) ApiError.Network else ApiError.Unknown

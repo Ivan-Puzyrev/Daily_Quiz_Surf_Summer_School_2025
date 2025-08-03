@@ -12,6 +12,7 @@ sealed class MainScreenState {
     data class SettingsError(val categoriesList: List<Category>) : MainScreenState()
     object SettingsLoading : MainScreenState()
     data class Question(val question: com.ivanpuzyrev.domain.entities.Question, val numberOfQuestion: Int, val totalNumberOfQuestions: Int) : MainScreenState()
+    data class GameFinished(val gameResult: com.ivanpuzyrev.domain.entities.GameResult): MainScreenState()
     object LastQuestion : MainScreenState()
     object GameResult : MainScreenState()
 

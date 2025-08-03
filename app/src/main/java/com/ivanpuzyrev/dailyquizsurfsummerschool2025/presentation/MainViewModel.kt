@@ -12,12 +12,18 @@ import com.ivanpuzyrev.data.QuizRepositoryImpl
 import com.ivanpuzyrev.domain.ApiResult
 import com.ivanpuzyrev.domain.entities.Answer
 import com.ivanpuzyrev.domain.entities.Category
+import com.ivanpuzyrev.domain.entities.Difficulty
+import com.ivanpuzyrev.domain.entities.GameResult
 import com.ivanpuzyrev.domain.entities.Question
 import com.ivanpuzyrev.domain.usecases.GetCategoriesUseCase
 import com.ivanpuzyrev.domain.usecases.GetQuestionsUseCase
 import com.ivanpuzyrev.domain.usecases.SaveGameResultUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -27,7 +33,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val saveGameResultUseCase = SaveGameResultUseCase(repository)
 
     val mainScreenState: MutableStateFlow<MainScreenState> = MutableStateFlow(Initial)
+
     var categoryList: List<Category> = emptyList()
+    var selectedCategoryId:Int = 0
+    var selectedDifficulty: String = ""
     var questionsList: List<Question> = emptyList()
     val answers = mutableListOf<Answer>()
     var currentQuestion = 1
@@ -50,7 +59,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun answerTheQuestion(answer: String) {
-        val question = questionsList[currentQuestion-2]
+        val question = questionsList[currentQuestion - 2]
         val answer = Answer(question, answer)
         answers.add(answer)
         val correctAnswers = answers.count { it.selectedAnswer == it.question.correctAnswer }
@@ -58,7 +67,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun getNextQuestion() {
-
         mainScreenState.value =
             Question(questionsList[currentQuestion - 1], currentQuestion, TOTAL_NUMBER_OF_QUESTIONS)
         currentQuestion++
@@ -66,6 +74,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun loadQuestions(categoryId: Int, difficulty: String) {
         viewModelScope.launch {
+            selectedDifficulty = difficulty
+            selectedCategoryId = categoryId
             mainScreenState.value = SettingsLoading
             val apiResult = getQuestionsUseCase(categoryId, difficulty)
             when (apiResult) {
@@ -80,6 +90,41 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 }
             }
         }
+    }
+
+    fun startTheNewGame() {
+        mainScreenState.value = Initial
+    }
+
+    fun finishTheGame() {
+        viewModelScope.launch {
+            val zonedDateTime = ZonedDateTime.now(ZoneId.systemDefault())
+            val formatter = DateTimeFormatter.ofPattern("dd MMMM", Locale("ru"))
+            val formattedDate = zonedDateTime.format(formatter)
+            val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+            val formattedTime = zonedDateTime.format(timeFormatter)
+            val difficulty = Difficulty.entries.find { it.difficulty == selectedDifficulty } ?: Difficulty.UNKNOWN
+            val gameResult = GameResult(
+                date = formattedDate,
+                time = formattedTime,
+                category = categoryList.find { it.id == selectedCategoryId }?.name ?: "",
+                difficulty = difficulty,
+                correctAnswers = answers.filter { it.selectedAnswer == it.question.correctAnswer }.size,
+                answers = answers
+            )
+            mainScreenState.value = MainScreenState.GameFinished(gameResult)
+            saveGameResultUseCase(gameResult)
+            clearTheResults()
+        }
+    }
+
+    fun clearTheResults() {
+        categoryList = emptyList()
+        selectedCategoryId = 0
+        selectedDifficulty = ""
+        questionsList = emptyList()
+        answers.clear()
+        currentQuestion = 1
     }
 
     companion object {

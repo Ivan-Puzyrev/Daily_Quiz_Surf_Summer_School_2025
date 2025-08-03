@@ -23,11 +23,13 @@ import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables.GameFinishedScreen
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables.QuestionScreen
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables.SettingScreen
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables.StartScreen
 import com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.ui.theme.DailyQuizSurfSummerSchool2025Theme
 import com.ivanpuzyrev.domain.entities.Category
+import com.ivanpuzyrev.domain.entities.GameResult
 import com.ivanpuzyrev.domain.entities.Question
 import kotlinx.coroutines.launch
 
@@ -90,11 +92,21 @@ class MainActivity : ComponentActivity() {
                             }
                         } else {
                             QuestionScreen(questionState.question, questionState.numberOfQuestion, questionState.totalNumberOfQuestions) {
-
+                                viewModel.answerTheQuestion(it)
+                                viewModel.finishTheGame()
                             }
                         }
 
                     }
+
+                    is MainScreenState.GameFinished -> {
+                        val gameFinishedState = (mainScreenState.value as MainScreenState.GameFinished)
+                        GameFinishedScreen(
+                            gameResult = gameFinishedState.gameResult,
+                            onPlayAgainClick = { viewModel.startTheNewGame() }
+                        )
+                    }
+
                     else -> {
 
                     }
