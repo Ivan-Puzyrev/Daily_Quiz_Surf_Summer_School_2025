@@ -3,10 +3,8 @@ package com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,8 +18,6 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -82,7 +78,11 @@ fun QuestionScreen(
         var isButtonEnabled by remember { mutableStateOf(false) }
         var selectedOption by remember { mutableStateOf("") }
 
-        Column(modifier = Modifier.padding(paddings).fillMaxHeight()) {
+        Column(
+            modifier = Modifier
+                .padding(paddings)
+                .fillMaxHeight()
+        ) {
 
             Card(
                 modifier = Modifier
@@ -90,7 +90,12 @@ fun QuestionScreen(
                     .weight(1f),
                 shape = RoundedCornerShape(46.dp)
             ) {
-                Column(modifier = Modifier.padding(32.dp).fillMaxHeight(), verticalArrangement = Arrangement.SpaceBetween) {
+                Column(
+                    modifier = Modifier
+                        .padding(32.dp)
+                        .fillMaxHeight(),
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
                     Column {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
@@ -190,10 +195,8 @@ fun RadioGroup(radioOptions: List<String>, onOptionsSelected: (String) -> Unit) 
                         .padding(15.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    RadioButton(
-                        colors = RadioButtonDefaults.colors(selectedColor = Purple),
-                        selected = (selected),
-                        onClick = null,
+                    QuizRadioButton(
+                        isSelected = selected
                     )
                     Text(
                         text = text,
