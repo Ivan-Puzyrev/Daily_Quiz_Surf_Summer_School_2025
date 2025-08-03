@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.ivanpuzyrev.data.QuizRepositoryImpl
 import com.ivanpuzyrev.domain.entities.GameResult
+import com.ivanpuzyrev.domain.usecases.DeleteGameResultUseCase
 import com.ivanpuzyrev.domain.usecases.GetGameResultsUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,8 +16,10 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
 
     private val repository = QuizRepositoryImpl(application)
     private val getGameResultsUseCase = GetGameResultsUseCase(repository)
+    private val deleteGameResultUseCase = DeleteGameResultUseCase(repository)
 
     val historyScreenState: MutableStateFlow<HistoryScreenState> = MutableStateFlow(HistoryScreenState.Initial)
+
 
     init {
         getGameResults()
@@ -31,6 +34,12 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
                     historyScreenState.emit(HistoryScreenState.GameResults(it))
                 }
             }
+        }
+    }
+
+    fun deleteGameResult (gameResultId: Int) {
+        viewModelScope.launch {
+            deleteGameResultUseCase.invoke(gameResultId)
         }
     }
 

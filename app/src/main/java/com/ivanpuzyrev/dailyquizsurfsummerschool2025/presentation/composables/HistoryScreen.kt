@@ -1,7 +1,9 @@
 package com.ivanpuzyrev.dailyquizsurfsummerschool2025.presentation.composables
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,22 +12,29 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
@@ -70,7 +79,8 @@ fun HistoryScreen(onHistoryRecordClick: (GameResult) -> Unit, onStartTheGameClic
             is HistoryScreenState.NoRecords -> {
                 Card(
                     modifier = Modifier
-                        .padding(paddings).padding(horizontal = 20.dp),
+                        .padding(paddings)
+                        .padding(horizontal = 20.dp),
                     shape = RoundedCornerShape(46.dp)
                 ) {
                     Column(
@@ -106,9 +116,20 @@ fun HistoryScreen(onHistoryRecordClick: (GameResult) -> Unit, onStartTheGameClic
                     verticalArrangement = Arrangement.SpaceBetween,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+
+                    var deletingItemId by remember { mutableIntStateOf(-1) }
+
                     LazyColumn(modifier = Modifier.weight(1f)) {
                         items(items = gameResults, key = { it.id }) { gameResult ->
-                            GameResultCard(gameResult, { onHistoryRecordClick(it) })
+                            GameResultCard(
+                                gameResult = gameResult,
+                                onHistoryRecordClick = { onHistoryRecordClick(it) },
+                                onLongHistoryRecordClick = {
+                                    deletingItemId = it
+                                },
+                                onDeleteHistoryRecordClicked = { viewModel.deleteGameResult(it) },
+                                deletingItemId = deletingItemId
+                            )
                             Spacer(Modifier.height(28.dp))
                         }
                     }
@@ -148,12 +169,20 @@ fun PreviewHistoryScreen() {
 }
 
 @Composable
-fun GameResultCard(gameResult: GameResult, onHistoryRecordClick: (GameResult) -> Unit) {
+fun GameResultCard(
+    gameResult: GameResult,
+    onHistoryRecordClick: (GameResult) -> Unit,
+    onLongHistoryRecordClick: (Int) -> Unit,
+    onDeleteHistoryRecordClicked: (Int) -> Unit,
+    deletingItemId: Int
+) {
     Card(
         modifier = Modifier
             .padding(horizontal = 20.dp)
-            .clickable { onHistoryRecordClick(gameResult) },
-
+            .combinedClickable(
+                onClick = { onHistoryRecordClick(gameResult) },
+                onLongClick = { onLongHistoryRecordClick(gameResult.id) }
+            ),
         shape = RoundedCornerShape(46.dp)
     ) {
         Column(
@@ -237,24 +266,49 @@ fun GameResultCard(gameResult: GameResult, onHistoryRecordClick: (GameResult) ->
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center
             )
+
+            DropdownMenu(
+                expanded = deletingItemId == gameResult.id,
+                onDismissRequest = { onLongHistoryRecordClick(-1) },
+                offset = DpOffset(x = 150.dp, y = (-200).dp),
+                shape = RoundedCornerShape(18.dp),
+                containerColor = White,
+                border = BorderStroke(1.dp, Purple),
+                shadowElevation = 0.dp
+
+            ) {
+                Row(modifier = Modifier.padding(8.dp).clickable{
+                    onLongHistoryRecordClick(-1)
+                    onDeleteHistoryRecordClicked(gameResult.id)
+                },
+                    verticalAlignment = Alignment.CenterVertically) {
+                    Image(
+                        painterResource(R.drawable.trash_icon), "Delete icon"
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(modifier = Modifier.width(150.dp), text = "Удалить")
+
+                }
+
+            }
         }
     }
 }
 
 //@Preview
-@Composable
-fun PreviewResultCard() {
-    DailyQuizSurfSummerSchool2025Theme {
-        val gameResult = GameResult(
-            date = "01.02.2023",
-            time = "13:23",
-            category = "General",
-            difficulty = Difficulty.EASY,
-            correctAnswers = 3,
-            answers = emptyList()
-        )
-        GameResultCard(gameResult) {
-
-        }
-    }
-}
+//@Composable
+//fun PreviewResultCard() {
+//    DailyQuizSurfSummerSchool2025Theme {
+//        val gameResult = GameResult(
+//            date = "01.02.2023",
+//            time = "13:23",
+//            category = "General",
+//            difficulty = Difficulty.EASY,
+//            correctAnswers = 3,
+//            answers = emptyList()
+//        )
+//        GameResultCard(gameResult) {
+//
+//        }
+//    }
+//}

@@ -14,6 +14,12 @@ class NavigationState(
         navHostController.navigate(route)
     }
 
+    fun navigateToStarScreen() {
+        navHostController.navigate(ScreenRoute.ROUTE_GAME) {
+            popUpTo(ScreenRoute.ROUTE_GAME) { inclusive = true }
+        }
+    }
+
     fun navigateToStatistics(gameResult: GameResult) {
         navHostController.navigate(ScreenRoute.Statistics.getRouteWithArgs(gameResult))
     }

@@ -54,8 +54,12 @@ class MainActivity : ComponentActivity() {
                     gameScreen = {
                         GameScreen { navigationState.navigateTo(ScreenRoute.ROUTE_HISTORY) }
                     },
-                    historyScreen = { HistoryScreen({ navigationState.navigateToStatistics(it) }, { }) },
-                    statisticsScreen = { StatisticsScreen(it) { } }
+                    historyScreen = {
+                        HistoryScreen(
+                            { navigationState.navigateToStatistics(it) },
+                            { navigationState.navigateToStarScreen() })
+                    },
+                    statisticsScreen = { StatisticsScreen(it) { navigationState.navigateToStarScreen() } }
                 )
             }
         }
