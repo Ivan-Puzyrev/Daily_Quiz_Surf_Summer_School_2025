@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
                     gameScreen = {
                         GameScreen { navigationState.navigateTo(ScreenRoute.ROUTE_HISTORY) }
                     },
-                    historyScreen = { },
+                    historyScreen = { HistoryScreen({ }, { }) },
                     statisticsScreen = { }
                 )
             }

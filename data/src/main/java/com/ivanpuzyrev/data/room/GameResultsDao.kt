@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface GameResultsDao {
 
-    @Query("SELECT * FROM game_results")
+    @Query("SELECT * FROM game_results ORDER BY id DESC")
     fun getGameResults(): Flow<List<GameResultDbModel>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
